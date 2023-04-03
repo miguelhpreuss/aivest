@@ -61,31 +61,34 @@ def signup(mydb, nome, email, senha):
 def login(mydb, email, senha):
     try:
         # Cria um cursor
-        mycursor = mydb.cursor()
+        mycursor = mydb.cursor(buffered=True)
 
         # Seleciona o usuário correspondente ao email informado
         sql = "SELECT * FROM usuarios WHERE email = %s"
         val = (email,)
         mycursor.execute(sql, val)
         usuario = mycursor.fetchone()
-
         if usuario:
             # Verifica se a senha informada é igual à senha armazenada no banco de dados
             if bcrypt.checkpw(senha.encode('utf-8'), usuario[3].encode('utf-8')):
                 # Seleciona as preferências do usuário na tabela "preferencias"
+                print(usuario)
                 sql = "SELECT * FROM preferencias WHERE usuario_id = %s"
                 val = (usuario[0],)
                 mycursor.execute(sql, val)
                 preferencias = mycursor.fetchone()
+                print(preferencias)
+                # descarta os resultados da consulta anterior
+                mycursor.fetchall()
 
-                return {"id": usuario[0], "nome": usuario[1], "email": usuario[2], "preferencias": preferencias[2]}
+                return {"id": usuario[0], "nome": usuario[1], "email": usuario[2], "token": "True"} #"preferencias": preferencias[2]
             else:
                 print("\033[31mERRO\033[37m:     Senha incorreta.")
-                return {"msg": "Senha incorreta", "erro": error}
+                return {"erro": "Senha incorreta"}#, "erro": error}
         else:
             print("\033[31mERRO\033[37m:     Email incorreto.")
-            return {"msg": "Email incorreto", "erro": error}
+            return {"erro": "Email incorreto"}#, "erro": error}
 
     except mysql.connector.Error as error:
-        print("\033[31mERRO\033[37m:     Erro ao buscar usuário:", error)
-        return {"msg": "Erro ao buscar usuário", "erro": error}
+        print("\033[31mERRO\033[37m:     Erro interno:", error)
+        return {"erro": "Erro interno", "erro": error}

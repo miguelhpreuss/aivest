@@ -1,13 +1,22 @@
 import mysql.connector
 import bcrypt
+import json
 
 def connect():
     try:
+        with open('config.json', 'r') as arquivo:
+            config = json.load(arquivo)
+
+        if config["test"]:
+            db_config = "db_test"
+        else:
+            db_config = "db_prod"
+
         mydb = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            password="hp13hp13",
-            database="aivest"
+            host= config[db_config]["host"],
+            user= config[db_config]["user"],
+            password= config[db_config]["password"],
+            database= config[db_config]["database"]
         )
         print(
             f"\033[32mINFO\033[37m:     Conexão bem sucedida com o Banco de Dados: {mydb._host}")

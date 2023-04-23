@@ -1,0 +1,15 @@
+{
+    "test": false,
+    "db_test":{
+        "host":"127.0.0.1",
+        "user":"root",
+        "password":"hp13hp13",
+        "database":"aivest"
+    },
+    "db_prod":{
+        "host":"miguelhpreuss.mysql.pythonanywhere-services.com",
+        "user":"miguelhpreuss",
+        "password":"hp13hp13",
+        "database":"aivest"
+    }
+}

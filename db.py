@@ -1,16 +1,13 @@
-# https://www.freemysqlhosting.net/
-
 import mysql.connector
 import bcrypt
-
 
 def connect():
     try:
         mydb = mysql.connector.connect(
-            host="sql9.freemysqlhosting.net",
-            user="sql9610501",
-            password="wfzWNvg9yw",
-            database="sql9610501"
+            host="127.0.0.1",
+            user="root",
+            password="hp13hp13",
+            database="aivest"
         )
         print(
             f"\033[32mINFO\033[37m:     Conexão bem sucedida com o Banco de Dados: {mydb._host}")
@@ -26,30 +23,29 @@ def signup(mydb, nome, email, senha):
         # Cria um cursor
         mycursor = mydb.cursor()
 
+        sql = "SELECT * FROM users WHERE email = %s"
+        val = (email,)
+        mycursor.execute(sql, val)
+        usuario = mycursor.fetchone()
+        if usuario:
+            return {"erro": "Email já cadastrado"}
+
         # Gera o hash da senha
         hashed_senha = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt())
 
         # Insere o novo usuário na tabela "usuarios"
-        sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
         val = (nome, email, hashed_senha)
         mycursor.execute(sql, val)
         usuario_id = mycursor.lastrowid
         print(
             "\033[32mINFO\033[37m:     Novo usuário cadastrado com sucesso. ID:", usuario_id)
 
-        # Cria um registro de preferências padrão para o novo usuário na tabela "preferencias"
-        sql = "INSERT INTO preferencias (usuario_id, preferencia_1, lista_preferencias) VALUES (%s, %s, %s)"
-        val = (usuario_id, "Preferência 1",
-               "Preferência 1, Preferência 2, Preferência 3")
-        mycursor.execute(sql, val)
-        preferencias_id = mycursor.lastrowid
-        print(
-            "\033[32mINFO\033[37m:     Novas preferências cadastradas com sucesso. ID:", preferencias_id)
-
         # Confirma a transação
         mydb.commit()
 
-        return {"msg": "Sucesso ao cadastrar"}
+        return {"id": usuario_id, "nome": nome, "email": email, "token": "True"} #"preferencias": preferencias[2]
+
 
     except mysql.connector.Error as error:
         print("\033[31mERRO\033[37m:     Ao cadastrar novo usuário:", error)
@@ -64,7 +60,7 @@ def login(mydb, email, senha):
         mycursor = mydb.cursor(buffered=True)
 
         # Seleciona o usuário correspondente ao email informado
-        sql = "SELECT * FROM usuarios WHERE email = %s"
+        sql = "SELECT * FROM users WHERE email = %s"
         val = (email,)
         mycursor.execute(sql, val)
         usuario = mycursor.fetchone()
@@ -73,7 +69,7 @@ def login(mydb, email, senha):
             if bcrypt.checkpw(senha.encode('utf-8'), usuario[3].encode('utf-8')):
                 # Seleciona as preferências do usuário na tabela "preferencias"
                 print(usuario)
-                sql = "SELECT * FROM preferencias WHERE usuario_id = %s"
+                sql = "SELECT * FROM preferences WHERE userid = %s"
                 val = (usuario[0],)
                 mycursor.execute(sql, val)
                 preferencias = mycursor.fetchone()
@@ -81,7 +77,7 @@ def login(mydb, email, senha):
                 # descarta os resultados da consulta anterior
                 mycursor.fetchall()
 
-                return {"id": usuario[0], "nome": usuario[1], "email": usuario[2], "token": "True"} #"preferencias": preferencias[2]
+                return {"id": usuario[0], "name": usuario[1], "email": usuario[2], "token": "True"} #"preferencias": preferencias[2]
             else:
                 print("\033[31mERRO\033[37m:     Senha incorreta.")
                 return {"erro": "Senha incorreta"}#, "erro": error}
@@ -92,3 +88,14 @@ def login(mydb, email, senha):
     except mysql.connector.Error as error:
         print("\033[31mERRO\033[37m:     Erro interno:", error)
         return {"erro": "Erro interno", "erro": error}
+
+
+def preferences():
+        # Cria um registro de preferências padrão para o novo usuário na tabela "preferencias"
+    sql = "INSERT INTO preferences (usuario_id, preferencia_1, lista_preferencias) VALUES (%s, %s, %s)"
+    val = (usuario_id, "Preferência 1",
+            "Preferência 1, Preferência 2, Preferência 3")
+    mycursor.execute(sql, val)
+    preferencias_id = mycursor.lastrowid
+    print(
+        "\033[32mINFO\033[37m:     Novas preferências cadastradas com sucesso. ID:", preferencias_id)

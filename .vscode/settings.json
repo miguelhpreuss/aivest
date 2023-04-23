@@ -5,13 +5,12 @@
                 "authProtocol": "default"
             },
             "previewLimit": 50,
-            "server": "sql9.freemysqlhosting.net",
+            "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
             "name": "aivest",
-            "username": "sql9610501",
-            "database": "sql9610501",
-            "password": "wfzWNvg9yw"
+            "database": "aivest",
+            "username": "root"
         }
     ]
 }

@@ -1,10 +1,12 @@
+# https://dbdiagram.io/d/644171546b31947051ef68f3
+
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="sql9.freemysqlhosting.net",
-    user="sql9610501",
-    password="wfzWNvg9yw",
-    database="sql9610501"
+    host="127.0.0.1",
+    user="root",
+    password="hp13hp13",
+    database="aivest"
 )
 
 mycursor = mydb.cursor()

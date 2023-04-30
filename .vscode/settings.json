@@ -1,16 +1,18 @@
 {
     "sqltools.connections": [
         {
-            "mysqlOptions": {
-                "authProtocol": "default"
-            },
             "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
+            "server": "dpg-ch2pck5gk4qarqifm97g-a.ohio-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
             "name": "aivest",
             "database": "aivest",
-            "username": "root"
+            "username": "aivest",
+            "password": "b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg"
         }
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
 }

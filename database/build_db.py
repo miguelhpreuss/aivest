@@ -1,9 +1,7 @@
-# https://dbdiagram.io/d/644171546b31947051ef68f3
-
-import mysql.connector
+import psycopg2
 import json
 
-with open('config.json', 'r') as arquivo:
+with open('../config.json', 'r') as arquivo:
     config = json.load(arquivo)
 
 if config["test"]:
@@ -11,20 +9,19 @@ if config["test"]:
 else:
     db_config = "db_prod"
 
-
-mydb = mysql.connector.connect(
-    host= config[db_config]["host"],
-    user= config[db_config]["user"],
-    password= config[db_config]["password"],
-    database= config[db_config]["database"]
+conn = psycopg2.connect(
+    host=config[db_config]["host"],
+    user=config[db_config]["user"],
+    password=config[db_config]["password"],
+    database=config[db_config]["database"]
 )
 
-mycursor = mydb.cursor()
+cur = conn.cursor()
 
-with open('bd.sql', 'r') as file:
+with open('bd_structure.sql', 'r') as file:
     sql_script = file.read()
 
-mycursor.execute(sql_script, multi=True)
-mydb.commit()
+cur.execute(sql_script)
+conn.commit()
 
-mydb.close()
+conn.close()

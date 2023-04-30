@@ -1,9 +1,8 @@
 import csv
-import mysql.connector
+import psycopg2
 import json
 
-
-with open('config.json', 'r') as arquivo:
+with open('../config.json', 'r') as arquivo:
     config = json.load(arquivo)
 
 if config["test"]:
@@ -11,7 +10,8 @@ if config["test"]:
 else:
     db_config = "db_prod"
 
-mydb = mysql.connector.connect(
+# Conecta ao banco de dados PostgreSQL
+conn = psycopg2.connect(
     host= config[db_config]["host"],
     user= config[db_config]["user"],
     password= config[db_config]["password"],
@@ -19,7 +19,7 @@ mydb = mysql.connector.connect(
 )
 
 # Prepara o cursor para executar os comandos SQL
-cursor = mydb.cursor()
+cursor = conn.cursor()
 
 # Abre o arquivo CSV
 with open("acoes.csv", newline='') as csvfile:
@@ -39,7 +39,7 @@ with open("acoes.csv", newline='') as csvfile:
         cursor.execute(sql, val)
 
 # Confirma as alterações no banco de dados
-mydb.commit()
+conn.commit()
 
 # Fecha a conexão com o banco de dados
-mydb.close()
+conn.close()

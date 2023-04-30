@@ -1,15 +1,15 @@
 {
-    "test": true,
+    "test": false,
     "db_test":{
-        "host":"127.0.0.1",
-        "user":"root",
-        "password":"hp13hp13",
+        "host":"dpg-ch2pck5gk4qarqifm97g-a.ohio-postgres.render.com",
+        "user":"aivest",
+        "password":"b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg",
         "database":"aivest"
     },
     "db_prod":{
-        "host":"miguelhpreuss.mysql.pythonanywhere-services.com",
-        "user":"miguelhpreuss",
-        "password":"hp13hp13",
+        "host":"postgres://aivest:b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg@dpg-ch2pck5gk4qarqifm97g-a/aivest",
+        "user":"aivest",
+        "password":"b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg",
         "database":"aivest"
     }
 }

@@ -7,7 +7,7 @@
         "database":"aivest"
     },
     "db_prod":{
-        "host":"postgres://aivest:b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg@dpg-ch2pck5gk4qarqifm97g-a",
+        "host":"dpg-ch2pck5gk4qarqifm97g-a",
         "user":"aivest",
         "password":"b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg",
         "database":"aivest"

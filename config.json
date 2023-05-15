@@ -1,5 +1,5 @@
 {
-    "test": true,
+    "test": false,
     "db_test":{
         "host":"dpg-ch2pck5gk4qarqifm97g-a.ohio-postgres.render.com",
         "user":"aivest",

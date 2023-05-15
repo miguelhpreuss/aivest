@@ -8,7 +8,6 @@ from ai import stock
 import jwt
 from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel
-import pandas as pd
 import acoes
 from acoes import SMA, EMA, RSI, MF, ATR, CMA, MACD, ATR
 import json

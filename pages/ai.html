@@ -86,11 +86,73 @@
          <div class="row">
             <div class="col-md-12">
                <div class="titlepage text_align_center">
-                  <h2>Inteligência <span class="blue_light">Artificial</span></h2>
+                  <h2>STOCK EXCHANGE <span class="blue_light">AI</span></h2>
                   <h1 class="blue_light" id="boasvindas">Olá ${}, faça boas escolhas!</h1>
                </div>
             </div>
-            <div class="divData" id="preferences">
+            
+            <input class="indicatorsButton" id="indicatorsButton" type="button" value="INDICADORES" onclick="changeTab(false)">
+            <input class="iaButton" id="aiButton" type="button" value="AI" onclick="changeTab(true)">
+
+            <div class="divData" id="indicators">
+
+               <p>
+                  AÇÃO
+               </p>
+               <div>
+                  <select id="stockIndicator">
+                     <option value="ABEV3">ABEV3</option>
+                     <option value="PETR4">PETR4</option>
+                     <option value="ELET6">ELET6</option>
+                     <option value="WEGE3">WEGE3</option>
+                  </select>
+               </div>
+
+               <p>
+                  INDICADOR
+               </p>
+               <div>
+                  <select id="indicator">
+                     <option value="SMA">SMA</option>
+                     <option value="EMA">EMA</option>
+                     <option value="CMA">CMA</option>
+                     <option value="MACD">MACD</option>
+                     <option value="RSI">RSI</option>
+                     <option value="MF">MF</option>
+                     <option value="ATR">ATR</option>
+                  </select>
+               </div>
+<!--
+               <p>
+                  VALOR A SER CONSIDERADO
+               </p>
+               <div>
+                  <select id="valueIndicator">
+                     <option value="Open">ABERTURA</option>
+                     <option value="Close">FECHAMENTO</option>
+                     <option value="High">MÁXIMA</option>
+                     <option value="Low">MÍNIMA</option>
+                  </select>
+               </div>
+
+               <p>
+                  PERÍODO
+               </p>
+               <div>
+                  <select id="periodIndicator">
+                     <option value="1mo">1 MÊS</option>
+                     <option value="3mo">3 MESES</option>
+                     <option value="6mo">6 MESES</option>
+                     <option value="12mo">12 MESES</option>
+                  </select>
+               </div>
+-->
+               <div>
+                  <input class="updateButton" id="update" type="button" value="GERAR GRÁFICO" onclick="updateChartIndicator()">
+               </div>
+               <div id="chartContainer" style="height: 600px; width: 100%;"></div>
+            </div>
+            <div class="divData" id="preferences" hidden>
                <p>
                   AÇÃO
                </p>
@@ -168,10 +230,8 @@
                   </label>
                </div>
                <div>
-                  <input class="updateButton" id="update" type="button" value="ATUALIZAR" onclick="updateChart()">
-               </div>
-               <div>
-                  <input class="saveButton" id="save" type="button" value="SALVAR" onclick="savepref()">
+                  <input class="saveButton" id="save" type="button" value="SALVAR PREFERÊNCIAS" onclick="savepref()">
+                  <input class="updateButton" id="update" type="button" value="GERAR GRÁFICO" onclick="updateChart()">
                </div>
                <div id="chartContainer" style="height: 600px; width: 100%;"></div>
             </div>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, Request, status, Cookie
+from fastapi import FastAPI, Response, Request, status, Cookie, HTTPException
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,18 +8,19 @@ from ai import stock
 import jwt
 from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel
-
+import pandas as pd
+import acoes
+from acoes import SMA, EMA, RSI, MF, ATR, CMA, MACD, ATR
+import json
 
 class ItemLogin(BaseModel):
     email: str
     senha: str
 
-
 class ItemSignup(BaseModel):
     email: str
     senha: str
     nome: str
-
 
 class ItemSavePref(BaseModel):
     stock: str
@@ -144,6 +145,174 @@ async def contact():
 @app.get("/api/data/{ticker}")
 async def read_item(ticker: str):
     return stock(ticker)
+
+
+@app.post("/api/get_stock_data")
+def get_stock_data(stock, period="1mo", interval="1d",
+                start=None, end=None, prepost=False, actions=True,
+                auto_adjust=True, back_adjust=False, repair=False, keepna=False,
+                proxy=None, rounding=False, timeout=10,
+                debug=True, raise_errors=False):
+    
+    data = acoes.get_data(stock, period=period, interval=interval,
+                start=start, end=end, prepost=prepost, actions=actions,
+                auto_adjust=auto_adjust, back_adjust=back_adjust, repair=repair, keepna=keepna,
+                proxy=proxy, rounding=rounding, timeout=timeout,
+                debug=debug, raise_errors=raise_errors)
+    #data.to_sql("data", ALCHEMY_POSTGRES_ENGINE.connect(), if_exists='replace')
+    data.index = data.index.astype(str)
+    data = data.to_dict()
+    return data
+
+@app.get("/api/SMA")
+def SMA_get(ticket, period=14, column='Close'):
+    period=int(period)
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket+ ".SA")
+    ########################################
+    indicator_data = SMA(data, period=period, column=column)
+    column_name = f"SMA_{period}_{column}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+
+@app.get("/api/EMA")
+def EMA_get(ticket, period=14, column='Close'):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col='Date')
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ###
+    indicator_data = EMA(data, period=period, column=column)
+    column_name = f"EMA_{period}_{column}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+    
+@app.get("/api/CMA")
+def CMA_get(ticket, column='Close'):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ####
+    indicator_data = CMA(data, column=column)
+    column_name = f"CMA_{column}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+
+@app.get("/api/MACD")
+def MACD_get(ticket,period_long=26, period_short=12, period_signal=9):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ###
+    indicator_data = MACD(data, period_long=26, period_short=12, period_signal=9)
+    column_name = f"MACD_{period_long}_{period_short}"
+    column_name_signal_line =f"MACD_{period_signal}"
+    data[column_name] = indicator_data[0]
+    data[column_name_signal_line] = indicator_data[1]
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+
+@app.get("/api/RSI")
+def RSI_get(ticket, period=14, column='Close'):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ####
+    indicator_data = RSI(data, period=period, column=column)
+    column_name = f"RSI_{column}_{period}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+
+@app.get("/api/MF")
+def MF_get(ticket, period=14, column='Close'):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ###
+    indicator_data = MF(data, period=period, column=column)
+    column_name = f"MF_{column}_{period}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
+
+@app.get("/api/ATR")
+def ATR_get(ticket, period=14):
+    #connection = ALCHEMY_POSTGRES_ENGINE.connect()
+    #try:
+    #    data = pd.read_sql("data", connection, index_col="Date")
+    #except Exception as exc:
+    #    raise HTTPException(status_code=422, detail="No stock was selected to be able to calculate indicator =")
+    data = acoes.get_data(ticket + ".SA")
+    ###
+    indicator_data = ATR(data, period=period)
+    column_name = f"ATR__{period}"
+    data[column_name] = indicator_data
+    #data.to_sql("data", connection, if_exists="replace", index=False)
+    data.fillna(-9999,inplace=True)
+    data.index = data.index.astype(str)
+    data_dict = data.to_dict()
+    final_dict = {}
+    final_dict['data'] = data_dict
+    final_dict['indicator_name'] = column_name
+    return final_dict
 
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 

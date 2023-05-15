@@ -177,7 +177,7 @@ def SMA_get(ticket, period=14, column='Close'):
     indicator_data = SMA(data, period=period, column=column)
     column_name = f"SMA_{period}_{column}"
     data[column_name] = indicator_data
-    data.to_sql("data", connection, if_exists="replace", index=False)
+    #data.to_sql("data", connection, if_exists="replace", index=False)
     data.fillna(-9999,inplace=True)
     data.index = data.index.astype(str)
     data_dict = data.to_dict()

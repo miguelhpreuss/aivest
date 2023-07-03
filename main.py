@@ -7,7 +7,6 @@ import db
 import jwt
 from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel
-import pandas as pd
 import acoes
 import pathlib
 import pickle

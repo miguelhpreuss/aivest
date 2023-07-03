@@ -1,0 +1,23 @@
+{
+    "test": false,
+    "db_test": {
+        "host": "dpg-ch2pck5gk4qarqifm97g-a.ohio-postgres.render.com",
+        "user": "aivest",
+        "password": "b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg",
+        "database": "aivest"
+    },
+    "db_prod": {
+        "host": "dpg-ch2pck5gk4qarqifm97g-a",
+        "user": "aivest",
+        "password": "b91P4eDHmBulhv9jF2oxdP7nBJRV7RHg",
+        "database": "aivest"
+    },
+    "availableOptions": {
+        "ai": {
+            "models": [
+                "LSTM",
+                "LR"
+            ]
+        }
+    }
+}

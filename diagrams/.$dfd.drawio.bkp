@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-07-03T03:16:33.761Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="CRR3E2a7pmDETTz7xl3v" version="21.2.8" type="device">
+<mxfile host="Electron" modified="2023-07-03T03:15:40.504Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="Fbz2l6c5cSo4oEy220zj" version="21.2.8" type="device">
   <diagram name="Página-1" id="v2aNgxTh3xgR2N08UNbh">
-    <mxGraphModel dx="1036" dy="606" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="714" dy="418" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -126,7 +126,7 @@
         <mxCell id="D939qClgLGFzhVqrAem5-4" value="stocks.py" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
           <mxGeometry x="500" y="365" width="90" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="D939qClgLGFzhVqrAem5-6" value="Yahoo Finance" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" vertex="1" parent="1">
+        <mxCell id="D939qClgLGFzhVqrAem5-6" value="Yahoo Finance" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="727" y="345" width="80" height="80" as="geometry" />
         </mxCell>
       </root>

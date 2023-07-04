@@ -333,7 +333,7 @@ function chart(ticket, indicator, model, periodIndicator, valueIndicator) {
 
                     for (let i = 0; i < (model == "lstm" ? 5 : 1); i++) {
                         const currentDate = new Date();
-                        currentDate.setDate(currentDate.getDate() + i);
+                        currentDate.setDate(currentDate.getDate() + 1);
                         const formattedDate = currentDate.toISOString().split("T")[0] + " 00:00:00-03:00";
                         let obj = {}
 
